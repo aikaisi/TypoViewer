@@ -1,0 +1,10 @@
+The TypoViewer Project is Copyright 2018, The TypoViewer Project Developers.
+
+Licensed under the GNU General Public License version 3 (see
+LICENSE.GPLv3) or the GNU Lesser General Public License version 3
+(see LICENSE.LGPLv3), at your option.
+
+Note that the TypoViewer Project uses PyQt5 as a library, which free
+version is provided under the GNU GPL v3 license. The copyleft clause may
+apply, in which case the end-user is left with choosing the GNU GPL v3
+as the end-user license.

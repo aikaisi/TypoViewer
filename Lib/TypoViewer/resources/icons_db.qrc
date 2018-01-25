@@ -1,0 +1,18 @@
+<RCC>
+  <qresource prefix="/">
+    <file>app.ico</file>
+    <file>icons/trash.png</file>
+    <file>icons/refresh.png</file>
+    <file>icons/file_delete.png</file>
+    <file>icons/file_remove.png</file>
+    <file>icons/new.png</file>
+    <file>app.png</file>
+    <file>icons/settings.png</file>
+    <file>icons/tool box.png</file>
+    <file>icons/add.png</file>
+    <file>icons/doc.png</file>
+    <file>icons/docx.png</file>
+    <file>icons/export.png</file>
+    <file>icons/txt.png</file>
+  </qresource>
+</RCC>
