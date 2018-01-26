@@ -17,23 +17,27 @@ from shutil import move
 
 
 def main():
+    tasks = []
     # Windows OS
     if os.name == 'nt':
         envPath = (os.sep).join(sys.executable.split(os.sep)[:-1])
 
-        makeResources = "\pyrcc5.exe -o ../resources/icons_db.py ../resources/icons_db.qrc"
-        makeLayout = "\pyuic5.exe -o ../windows/mainWindow.py ../windows/mainWindow.ui"
+        # Convert *layout* resources file (qrc) to *layout*_ui.py
+        tasks.append("\pyrcc5.exe -o ../resources/icons_db.py ../resources/icons_db.qrc")
+
+        # Convert *fonts* resources file (qrc) to *fonts*_ui.py
+        tasks.append("\pyrcc5.exe -o ../resources/samples.py ../resources/samples.qrc")
+
+        # Convert Qt Main *Window* file (ui) to *window'_ui.py
+        tasks.append("\pyuic5.exe -o ../windows/mainWindow.py ../windows/mainWindow.ui")
     # OSX
     else:
         envPath = ""
-        makeResources = "pyside-rcc -o layout_rc.py ui/layout.qrc"
-        makeLayout = "pyside-uic -o mainwindow_ui.py ui/mainWindow.ui"
+        tasks.append("pyside-rcc -o layout_rc.py ui/layout.qrc")
+        tasks.append("pyside-uic -o mainwindow_ui.py ui/mainWindow.ui")
 
-    # Convert *layout* resources file (qrc) to *layout*_ui.py
-    os.system(envPath + makeResources)
-
-    # Convert Qt Main *Window* file (ui) to *window'_ui.py
-    os.system(envPath + makeLayout)
+    for task in tasks:
+        os.system(envPath + task)
 
 def replace(file_path, pattern, subst):
     #Create temp file
@@ -53,6 +57,8 @@ def addDilimeters():
     #replace('../layout_rc.py','qt_resource_data',"# START\nqt_resource_data")
     #replace('../mainwindow_ui.py','class Ui_MainWindow',"# START\nclass Ui_MainWindow")
     replace('../windows/mainWindow.py','import icons_db_rc',"import TypoViewer.resources.icons_db")
+    replace('../windows/mainWindow.py', 'import samples_rc', "import TypoViewer.resources.samples")
+
 
 if __name__ == '__main__':
     main()

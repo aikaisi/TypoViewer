@@ -1,0 +1,6 @@
+<RCC>
+  <qresource prefix="/">
+    <file>samples/arabic_1.txt</file>
+    <file>samples/arabic_2.txt</file>
+  </qresource>
+</RCC>

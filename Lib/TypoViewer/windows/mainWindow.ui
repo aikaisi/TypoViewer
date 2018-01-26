@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>422</width>
-    <height>606</height>
+    <width>1096</width>
+    <height>801</height>
    </rect>
   </property>
   <property name="font">
@@ -25,35 +25,13 @@
   <widget class="QWidget" name="centralwidget">
    <layout class="QVBoxLayout" name="verticalLayout">
     <item>
-     <widget class="QListWidget" name="listWidget">
-      <property name="selectionMode">
-       <enum>QAbstractItemView::MultiSelection</enum>
-      </property>
-     </widget>
-    </item>
-    <item>
-     <widget class="QPushButton" name="btnConvert">
-      <property name="sizePolicy">
-       <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
-        <horstretch>0</horstretch>
-        <verstretch>0</verstretch>
-       </sizepolicy>
-      </property>
-      <property name="styleSheet">
-       <string notr="true"/>
-      </property>
-      <property name="text">
-       <string>Convert</string>
-      </property>
-      <property name="icon">
-       <iconset resource="../resources/icons_db.qrc">
-        <normaloff>:/icons/refresh.png</normaloff>:/icons/refresh.png</iconset>
-      </property>
-      <property name="iconSize">
-       <size>
-        <width>24</width>
-        <height>24</height>
-       </size>
+     <widget class="QTextEdit" name="textEdit">
+      <property name="font">
+       <font>
+        <pointsize>72</pointsize>
+        <stylestrategy>PreferAntialias</stylestrategy>
+        <kerning>true</kerning>
+       </font>
       </property>
      </widget>
     </item>
@@ -121,6 +99,7 @@
  </widget>
  <resources>
   <include location="../resources/icons_db.qrc"/>
+  <include location="../resources/samples.qrc"/>
  </resources>
  <connections/>
 </ui>

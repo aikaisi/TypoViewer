@@ -5,7 +5,13 @@
 from PyQt5.QtGui import QIcon
 from PyQt5.QtGui import QColor
 from PyQt5.QtGui import QPixmap
+from PyQt5.QtGui import QFontDatabase
+from PyQt5.QtGui import QFont
+from PyQt5.QtCore import QFile
 from PyQt5.QtCore import Qt
+from PyQt5.QtCore import QTextCodec
+from PyQt5.QtCore import QIODevice
+from PyQt5.QtCore import QByteArray
 from PyQt5.QtWidgets import QApplication
 from PyQt5.QtWidgets import QMainWindow
 from PyQt5.QtWidgets import QListWidgetItem
@@ -77,10 +83,57 @@ class iuniTools(QMainWindow):
         self.ui.setupUi(self)
         self.move(50, 50)
         self.setAcceptDrops(True)
+
+        #id = QFontDatabase.addApplicationFont(":/fonts/Ali-Uni_Samik_Regular.otf")
+        #family = QFontDatabase.applicationFontFamilies(id)[0]
+        #ali_samik = QFont(family)
+        #self.ui.textEdit.setFont(ali_samik)
+        #self.ui.textEdit.setFontPointSize(72)
+        self.setAcceptDrops(True)
+        self.ui.textEdit.setAcceptDrops(False)
+
+        stream = QFile(":/samples/arabic_2.txt")
+        if stream.open(QFile.ReadOnly):
+            sampleText = str(stream.readAll(), 'utf-8')
+            stream.close()
+        else:
+            print(stream.errorString())
+
+        self.ui.textEdit.setText(sampleText)
+
         # self.ui.actionDeleteItems.triggered.connect(self.removeFromTable)
         # self.ui.actionClearList.triggered.connect(self.removeAllFromTable)
         # self.ui.actionSelectFiles.triggered.connect(self.selectSourceFileDialog)
         # self.ui.btnConvert.clicked.connect(self.doConvert)
+
+    def dragEnterEvent(self, event):
+        if event.mimeData().hasUrls():
+            event.acceptProposedAction()
+            event.accept()
+        else:
+            event.ignore()
+
+    def dragMoveEvent(self, event):
+        if event.mimeData().hasUrls():
+            event.acceptProposedAction()
+            event.accept()
+        else:
+            event.ignore()
+
+    def dropEvent(self, event):
+        if event.mimeData().hasUrls():
+            urls = event.mimeData().urls()
+            for url in urls:
+                fileName = url.toLocalFile()
+                id = QFontDatabase.addApplicationFont(fileName)
+                family = QFontDatabase.applicationFontFamilies(id)[0]
+                font = QFont(family)
+                self.ui.textEdit.setFont(font)
+                self.ui.textEdit.setFontPointSize(72)
+                print(fileName)
+            event.accept()
+        else:
+            event.ignore()
 
 
 app = QApplication([])
