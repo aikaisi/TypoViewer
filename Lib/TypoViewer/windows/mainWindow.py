@@ -13,7 +13,7 @@ class Ui_MainWindow(object):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(1096, 801)
         font = QtGui.QFont()
-        font.setPointSize(17)
+        font.setPointSize(72)
         MainWindow.setFont(font)
         icon = QtGui.QIcon()
         icon.addPixmap(QtGui.QPixmap(":/app.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
