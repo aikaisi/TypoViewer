@@ -9,6 +9,7 @@ from PyQt5.QtGui import QFontDatabase
 from PyQt5.QtGui import QFont
 from PyQt5.QtCore import QFile
 from PyQt5.QtCore import Qt
+from PyQt5.QtCore import QFileSystemWatcher
 from PyQt5.QtCore import QTextCodec
 from PyQt5.QtCore import QIODevice
 from PyQt5.QtCore import QByteArray
@@ -27,6 +28,7 @@ class iuniTools(QMainWindow):
         self.text_style = {'background-color':'#FFFEEE', 'font-size':'72pt'}
         os.environ['QT_HARFBUZZ'] = 'old'
         super(iuniTools, self).__init__(parent)
+        self.observer = QFileSystemWatcher()
         self.createUi()
         self.fontsDB = QFontDatabase()
 
@@ -106,8 +108,9 @@ class iuniTools(QMainWindow):
 
         self.ui.cmbTextSamples.currentIndexChanged.connect(self.setSampleText)
         self.ui.cmbFontSize.currentIndexChanged.connect(self.setFontSize)
-
+        self.observer.fileChanged.connect(self.setTextFont)
         self.refreshTextStyle()
+
 
     def setSampleText(self, index):
         if index == 0:
@@ -132,15 +135,14 @@ class iuniTools(QMainWindow):
         return True
 
 
-    def setTextFont(self, url):
+    def setTextFont(self, fileName):
+        print(fileName)
         QFontDatabase.removeAllApplicationFonts()
-        fileName = url.toLocalFile()
         id = QFontDatabase.addApplicationFont(fileName)
         family = QFontDatabase.applicationFontFamilies(id)[0]
         font = QFontDatabase.font(self.fontsDB, family, 'bold', 128)
         font.setStrikeOut(False)
         self.ui.textEdit.setFont(font)
-        self.last_draged_Font = url
         self.ui.chkObserve.setEnabled(True)
         return family
 
@@ -180,7 +182,9 @@ class iuniTools(QMainWindow):
         if event.mimeData().hasUrls():
             urls = event.mimeData().urls()
             for url in urls:
-                fontName = self.setTextFont(url)
+                fileName = url.toLocalFile()
+                self.observer.addPath(fileName)
+                fontName = self.setTextFont(fileName)
                 if fontName:
                     self.setActiveFontLabel(fontName)
             event.accept()
