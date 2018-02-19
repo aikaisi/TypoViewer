@@ -6,8 +6,10 @@ from PyQt5.QtGui import QIcon
 from PyQt5.QtGui import QColor
 from PyQt5.QtGui import QPixmap
 from PyQt5.QtGui import QFontDatabase
+from PyQt5.QtGui import QTextCharFormat
+from PyQt5.QtGui import QTextCursor
 from PyQt5.QtGui import QFont
-from PyQt5.QtCore import QFile
+from PyQt5.QtCore import QFile, QSize, QPoint
 from PyQt5.QtCore import Qt
 from PyQt5.QtCore import QFileSystemWatcher
 from PyQt5.QtCore import QTextCodec
@@ -17,6 +19,9 @@ from PyQt5.QtWidgets import QApplication
 from PyQt5.QtWidgets import QMainWindow
 from PyQt5.QtWidgets import QListWidgetItem
 from TypoViewer.windows.mainWindow import Ui_MainWindow
+from TypoViewer.objects.settings import TypoSettings
+from TypoViewer.objects.usertexts import UserTexts
+from PyQt5.QtCore import QSignalBlocker
 import os
 
 
@@ -25,12 +30,15 @@ class iuniTools(QMainWindow):
     supportedFileFormats = ['docx']
 
     def __init__(self, parent=None):
-        self.text_style = {'background-color':'#FFFEEE', 'font-size':'72pt'}
-        os.environ['QT_HARFBUZZ'] = 'old'
+        self.settings = TypoSettings().getSettings()
+        self.user_texts = UserTexts().getTexts()
+        self.text_style = {'background-color':'#FFFEEE', 'font-size':'28pt'}
+        #os.environ['QT_HARFBUZZ'] = 'old'
         super(iuniTools, self).__init__(parent)
         self.observer = QFileSystemWatcher()
         self.createUi()
         self.fontsDB = QFontDatabase()
+        self.userTextIds = [0]
 
 
     def convertToUnicode(self, source, target):
@@ -109,8 +117,33 @@ class iuniTools(QMainWindow):
         self.ui.cmbTextSamples.currentIndexChanged.connect(self.setSampleText)
         self.ui.cmbFontSize.currentIndexChanged.connect(self.setFontSize)
         self.observer.fileChanged.connect(self.setTextFont)
+        self.ui.textEdit.textChanged.connect(self.saveUserText)
+        #self.ui.textEdit
+
+        self.resize(self.settings.value("size", QSize(270, 225)))
+        self.move(self.settings.value("pos", QPoint(50, 50)))
+        self.setCustomSampleText()
         self.refreshTextStyle()
 
+    def getSelectedSampleTextId(self):
+        selected = self.ui.cmbTextSamples.currentIndex()
+        print(selected)
+        return selected
+
+
+    def saveUserText(self):
+        blocker = QSignalBlocker(self.ui.textEdit)
+        selected = self.getSelectedSampleTextId()
+        if selected in self.userTextIds:
+            self.user_texts.setValue("text" + str(selected), self.ui.textEdit.toPlainText())
+        m = 1
+
+
+    def setCustomSampleText(self, id = 0):
+        blocker = QSignalBlocker(self.ui.textEdit)
+        vals = self.user_texts.value('text'+str(id), 'bbbbbbbbbbbbbb')
+        self.ui.textEdit.setText(vals)
+        return True
 
     def setSampleText(self, index):
         if index == 0:
@@ -128,11 +161,20 @@ class iuniTools(QMainWindow):
             self.ui.textEdit.setText(sample_text)
         except:
             print("error on opining sample text resource file")
+        begin = 1
+        end = 1000
+        fmt = QTextCharFormat()
+        fmt.setFontUnderline(True)
+        fmt.setUnderlineStyle(QTextCharFormat.WaveUnderline)
+        fmt.setUnderlineColor(Qt.red)
+        cursor = QTextCursor(self.ui.textEdit.document())
+        cursor.setPosition(begin, QTextCursor.MoveAnchor)
+        cursor.setPosition(end, QTextCursor.KeepAnchor)
+        cursor.setCharFormat(fmt)
 
 
-    def setCustomSampleText(self):
-        self.ui.textEdit.setText("Hallo World")
-        return True
+
+
 
 
     def setTextFont(self, fileName):
@@ -140,7 +182,7 @@ class iuniTools(QMainWindow):
         QFontDatabase.removeAllApplicationFonts()
         id = QFontDatabase.addApplicationFont(fileName)
         family = QFontDatabase.applicationFontFamilies(id)[0]
-        font = QFontDatabase.font(self.fontsDB, family, 'bold', 128)
+        font = QFontDatabase.font(self.fontsDB, family, 'bold', 48)
         font.setStrikeOut(False)
         self.ui.textEdit.setFont(font)
         self.ui.chkObserve.setEnabled(True)
@@ -190,7 +232,10 @@ class iuniTools(QMainWindow):
             event.accept()
         else:
             event.ignore()
-
+    def closeEvent(self, e):
+        self.settings.setValue("size", self.size())
+        self.settings.setValue("pos", self.pos())
+        e.accept()
 
 app = QApplication([])
 win = iuniTools()
