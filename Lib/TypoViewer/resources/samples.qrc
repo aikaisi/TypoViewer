@@ -2,5 +2,10 @@
   <qresource prefix="/">
     <file>samples/arabic_1.txt</file>
     <file>samples/arabic_2.txt</file>
+    <file>samples/marks.txt</file>
+	<file>samples/kurdish.txt</file> 
+    <file>samples/persian_arabic.txt</file>
+    <file>samples/persian_arabic2.txt</file>
+    <file>samples/Quran.txt</file>
   </qresource>
 </RCC>

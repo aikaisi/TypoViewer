@@ -33,8 +33,16 @@ def main():
     # OSX
     else:
         envPath = ""
-        tasks.append("pyside-rcc -o layout_rc.py ui/layout.qrc")
-        tasks.append("pyside-uic -o mainwindow_ui.py ui/mainWindow.ui")
+
+        # Convert *layout* resources file (qrc) to *layout*_ui.py
+        tasks.append("\pyrcc5 -o ../resources/icons_db.py ../resources/icons_db.qrc")
+
+        # Convert *fonts* resources file (qrc) to *fonts*_ui.py
+        tasks.append("\pyrcc5 -o ../resources/samples.py ../resources/samples.qrc")
+
+        # Convert Qt Main *Window* file (ui) to *window'_ui.py
+        tasks.append("\pyuic5 -o ../windows/mainWindow.py ../windows/mainWindow.ui")
+
 
     for task in tasks:
         os.system(envPath + task)
