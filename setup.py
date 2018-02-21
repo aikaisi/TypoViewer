@@ -14,8 +14,8 @@ setup(
     author_email="fadox@gmx.net",
     url="http://fadox.github.io",
     license="GNU LGPL v3/GNU GPL v3",
-    package_dir={"": "Lib"},
-    packages=find_packages("Lib"),
+    package_dir={"": "App"},
+    packages=find_packages("App"),
     entry_points={
         "gui_scripts": [
             "TypoViewer =  TypoViewer.__main__:main"

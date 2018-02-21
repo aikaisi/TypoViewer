@@ -9,7 +9,7 @@ class UserTexts:
         self.texts = QSettings(QSettings.IniFormat, QSettings.SystemScope, 'TypoViewer', 'user')
         #self.settings = QSettings('settings.ini', QSettings.IniFormat)
         self.texts.setFallbacksEnabled(False)  # File only, not registry or or.
-        self.texts.setValue('xx','yyyy')
+        #self.texts.setValue('xx','yyyy')
 
     def getTexts(self):
         return self.texts

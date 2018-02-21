@@ -9,7 +9,7 @@ class TypoSettings:
         self.settings = QSettings(QSettings.IniFormat, QSettings.SystemScope, 'TypoViewer', 'typo')
         #self.settings = QSettings('settings.ini', QSettings.IniFormat)
         self.settings.setFallbacksEnabled(False)  # File only, not registry or or.
-        print (self.settings.fileName())
+        #print (self.settings.fileName())
 
     def getSettings(self):
         return self.settings

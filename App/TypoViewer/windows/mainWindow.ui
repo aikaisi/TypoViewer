@@ -135,6 +135,16 @@
           </widget>
          </item>
          <item>
+          <widget class="QPushButton" name="btnPdbExport">
+           <property name="styleSheet">
+            <string notr="true">color:#ff0000;</string>
+           </property>
+           <property name="text">
+            <string>PDF</string>
+           </property>
+          </widget>
+         </item>
+         <item>
           <spacer name="horizontalSpacer">
            <property name="orientation">
             <enum>Qt::Horizontal</enum>
@@ -159,6 +169,12 @@
          </item>
          <item>
           <widget class="QComboBox" name="cmbFontSize">
+           <property name="minimumSize">
+            <size>
+             <width>60</width>
+             <height>0</height>
+            </size>
+           </property>
            <property name="styleSheet">
             <string notr="true">color:#fcfcfc;</string>
            </property>
@@ -235,32 +251,13 @@
           </widget>
          </item>
          <item>
-          <widget class="QSlider" name="sldFontSize">
-           <property name="enabled">
-            <bool>true</bool>
-           </property>
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
+          <widget class="QComboBox" name="cmbTextSamples">
            <property name="minimumSize">
             <size>
-             <width>160</width>
+             <width>150</width>
              <height>0</height>
             </size>
            </property>
-           <property name="styleSheet">
-            <string notr="true">color:#fcfcfc;</string>
-           </property>
-           <property name="orientation">
-            <enum>Qt::Horizontal</enum>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QComboBox" name="cmbTextSamples">
            <property name="styleSheet">
             <string notr="true">color:#fcfcfc;</string>
            </property>
@@ -349,6 +346,14 @@
    </property>
    <property name="text">
     <string>Settings</string>
+   </property>
+  </action>
+  <action name="actionTo_PDF">
+   <property name="text">
+    <string>To PDF</string>
+   </property>
+   <property name="toolTip">
+    <string>Export as PDF Document</string>
    </property>
   </action>
  </widget>

@@ -10,11 +10,13 @@ from PyQt5.QtGui import QTextCharFormat
 from PyQt5.QtGui import QTextCursor
 from PyQt5.QtGui import QFont
 from PyQt5.QtCore import QFile, QSize, QPoint
-from PyQt5.QtCore import Qt
+from PyQt5.QtCore import Qt, QSizeF
+
 from PyQt5.QtCore import QFileSystemWatcher
 from PyQt5.QtCore import QTextCodec
 from PyQt5.QtCore import QIODevice
 from PyQt5.QtCore import QByteArray
+from PyQt5.Qt import QPrinter
 from PyQt5.QtWidgets import QApplication
 from PyQt5.QtWidgets import QMainWindow
 from PyQt5.QtWidgets import QListWidgetItem
@@ -26,7 +28,7 @@ import os
 
 
 # START
-class iuniTools(QMainWindow):
+class MainApp(QMainWindow):
     supportedFileFormats = ['docx']
 
     def __init__(self, parent=None):
@@ -34,7 +36,7 @@ class iuniTools(QMainWindow):
         self.user_texts = UserTexts().getTexts()
         self.text_style = {'background-color':'#FFFEEE', 'font-size':'28pt'}
         #os.environ['QT_HARFBUZZ'] = 'old'
-        super(iuniTools, self).__init__(parent)
+        super(MainApp, self).__init__(parent)
         self.observer = QFileSystemWatcher()
         self.createUi()
         self.fontsDB = QFontDatabase()
@@ -118,16 +120,29 @@ class iuniTools(QMainWindow):
         self.ui.cmbFontSize.currentIndexChanged.connect(self.setFontSize)
         self.observer.fileChanged.connect(self.setTextFont)
         self.ui.textEdit.textChanged.connect(self.saveUserText)
+        self.ui.btnPdbExport.clicked.connect(self.exportToPdf)
+
+
         #self.ui.textEdit
 
         self.resize(self.settings.value("size", QSize(270, 225)))
         self.move(self.settings.value("pos", QPoint(50, 50)))
         self.setCustomSampleText()
         self.refreshTextStyle()
+    def exportToPdf(self):
+        printer = QPrinter(QPrinter.PrinterResolution)
+        printer.setOutputFormat(QPrinter.PdfFormat)
+        printer.setPaperSize(QPrinter.A4)
+        printer.setOutputFileName('export_sample.pdf')
+        document = self.ui.textEdit.document()
+        size = QSizeF(printer.paperRect().size())
+        document.setPageSize(size)
+        document.print(printer)
+        print('###')
 
     def getSelectedSampleTextId(self):
         selected = self.ui.cmbTextSamples.currentIndex()
-        print(selected)
+        #print(selected)
         return selected
 
 
@@ -141,7 +156,7 @@ class iuniTools(QMainWindow):
 
     def setCustomSampleText(self, id = 0):
         blocker = QSignalBlocker(self.ui.textEdit)
-        vals = self.user_texts.value('text'+str(id), 'bbbbbbbbbbbbbb')
+        vals = self.user_texts.value('text'+str(id), 'Write your Text here ..')
         self.ui.textEdit.setText(vals)
         return True
 
@@ -161,29 +176,52 @@ class iuniTools(QMainWindow):
             self.ui.textEdit.setText(sample_text)
         except:
             print("error on opining sample text resource file")
+
+
+        """
         begin = 1
         end = 1000
+
+        
         fmt = QTextCharFormat()
         fmt.setFontUnderline(True)
         fmt.setUnderlineStyle(QTextCharFormat.WaveUnderline)
         fmt.setUnderlineColor(Qt.red)
-        cursor = QTextCursor(self.ui.textEdit.document())
-        cursor.setPosition(begin, QTextCursor.MoveAnchor)
-        cursor.setPosition(end, QTextCursor.KeepAnchor)
-        cursor.setCharFormat(fmt)
 
+        cursor = QTextCursor(self.ui.textEdit.document())
+        cursor.movePosition(QTextCursor.Start)
+
+        for i in range (1, 100):
+            cursor.movePosition(QTextCursor.StartOfWord)
+            cursor.movePosition(QTextCursor.EndOfWord, QTextCursor.KeepAnchor)
+            print()
+            print('###')
+            print(cursor.selectedText())
+            cursor.setCharFormat(fmt)
+            ff = cursor.charFormat().font()
+            h = cursor.charFormat().font().StyleHint
+            hh = cursor.charFormat().font().StyleHint()
+
+
+            print(cursor.charFormat().font().family())
+            print(cursor.charFormat().font().defaultFamily())
+
+            cursor.movePosition(QTextCursor.NextWord, QTextCursor.MoveAnchor)
+"""
 
 
 
 
 
     def setTextFont(self, fileName):
-        print(fileName)
+        #print(fileName)
         QFontDatabase.removeAllApplicationFonts()
         id = QFontDatabase.addApplicationFont(fileName)
         family = QFontDatabase.applicationFontFamilies(id)[0]
         font = QFontDatabase.font(self.fontsDB, family, 'bold', 48)
         font.setStrikeOut(False)
+        #font.setStyleHint(QFont.SansSerif)
+        #sysFont = QFontDatabase.font(self.fontsDB,'Lucida Grande UI','bold',300)
         self.ui.textEdit.setFont(font)
         self.ui.chkObserve.setEnabled(True)
         return family
@@ -238,7 +276,10 @@ class iuniTools(QMainWindow):
         e.accept()
 
 app = QApplication([])
-win = iuniTools()
+#font= QFont("Courier New")
+#font.setStyleHint(QFont.Monospace)
+#app.setFont(font)
+win = MainApp()
 
 win.show()
 
