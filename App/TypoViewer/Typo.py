@@ -104,11 +104,11 @@ class MainApp(QMainWindow):
         # transparent
         self.setAttribute(Qt.WA_DeleteOnClose, True)
         self.setAttribute(Qt.WA_TranslucentBackground, True)
+        self.setWindowFlags(Qt.FramelessWindowHint)
         self.setStyleSheet("background: transparent; border: none;")
+        self.oldPos = self.pos()
 
-        #self.ui.textEdit.setFontPointSize(122)
-        #self.ui.textEdit.setStyleSheet('line-height: 10px;background-color:#ffffff;')
-        #high = self.ui.textEdit.document().size().height()
+
 
         # disable observe checkbox on start
         self.ui.chkObserve.setEnabled(False)
@@ -129,6 +129,16 @@ class MainApp(QMainWindow):
         self.move(self.settings.value("pos", QPoint(50, 50)))
         self.setCustomSampleText()
         self.refreshTextStyle()
+
+    def mousePressEvent(self, event):
+        self.oldPos = event.globalPos()
+
+    def mouseMoveEvent(self, event):
+        delta = QPoint (event.globalPos() - self.oldPos)
+        #print(delta)
+        self.move(self.x() + delta.x(), self.y() + delta.y())
+        self.oldPos = event.globalPos()
+                
     def exportToPdf(self):
         printer = QPrinter(QPrinter.PrinterResolution)
         printer.setOutputFormat(QPrinter.PdfFormat)
