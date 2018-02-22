@@ -20,11 +20,12 @@ from PyQt5.Qt import QPrinter
 from PyQt5.QtWidgets import QApplication
 from PyQt5.QtWidgets import QMainWindow
 from PyQt5.QtWidgets import QListWidgetItem
+from PyQt5.QtWidgets import QSizeGrip
 from TypoViewer.windows.mainWindow import Ui_MainWindow
 from TypoViewer.objects.settings import TypoSettings
 from TypoViewer.objects.usertexts import UserTexts
 from PyQt5.QtCore import QSignalBlocker
-import os
+import os, random
 
 
 # START
@@ -35,12 +36,13 @@ class MainApp(QMainWindow):
         self.settings = TypoSettings().getSettings()
         self.user_texts = UserTexts().getTexts()
         self.text_style = {'background-color':'#FFFEEE', 'font-size':'28pt'}
-        #os.environ['QT_HARFBUZZ'] = 'old'
+        os.environ['QT_HARFBUZZ'] = 'old'
         super(MainApp, self).__init__(parent)
         self.observer = QFileSystemWatcher()
         self.createUi()
         self.fontsDB = QFontDatabase()
         self.userTextIds = [0]
+        self.last_font = None
 
 
     def convertToUnicode(self, source, target):
@@ -104,10 +106,16 @@ class MainApp(QMainWindow):
         # transparent
         self.setAttribute(Qt.WA_DeleteOnClose, True)
         self.setAttribute(Qt.WA_TranslucentBackground, True)
-        self.setWindowFlags(Qt.FramelessWindowHint)
+        #self.setWindowFlags(Qt.WindowStaysOnTopHint | Qt.FramelessWindowHint)
+
         self.setStyleSheet("background: transparent; border: none;")
         self.oldPos = self.pos()
 
+        seizGrip = QSizeGrip(self)
+        self.setWindowOpacity(0.90)
+
+        self.text_style['background-color'] = "#cccccc"
+        self.text_style['color'] = "#ff0000"
 
 
         # disable observe checkbox on start
@@ -223,25 +231,40 @@ class MainApp(QMainWindow):
 
 
 
-    def setTextFont(self, fileName):
-        #print(fileName)
+    def setTextFont(self, fileName, size=92):
+        print(size)
+        bin = self.readFontFileAsBinary(fileName)
         QFontDatabase.removeAllApplicationFonts()
-        id = QFontDatabase.addApplicationFont(fileName)
+        #id = QFontDatabase.addApplicationFont(fileName)
+        id = QFontDatabase.addApplicationFontFromData(bin)
         family = QFontDatabase.applicationFontFamilies(id)[0]
-        font = QFontDatabase.font(self.fontsDB, family, 'bold', 48)
+        font = QFontDatabase.font(self.fontsDB, family, 'bold', size)
         font.setStrikeOut(False)
-        #font.setStyleHint(QFont.SansSerif)
-        #sysFont = QFontDatabase.font(self.fontsDB,'Lucida Grande UI','bold',300)
         self.ui.textEdit.setFont(font)
+        self.ui.textEdit.setCurrentFont(font)
         self.ui.chkObserve.setEnabled(True)
         return family
 
+    def readFontFileAsBinary(self, path):
+        f = QFile(path)
+        f.open(QIODevice.ReadOnly | QIODevice.Unbuffered)
+
+        try:
+            content = f.readAll()
+        finally:
+            f.close()
+        return content
+
     def setFontSize(self, index):
         fontSize = self.ui.cmbFontSize.itemText(index)
-        try:
-            self.text_style['font-size'] = fontSize + 'pt'
-        except:
-            print('error on set font size')
+        if self.last_font:
+            #self.setTextFont(self.last_font, int(fontSize))
+            self.ui.textEdit.font().setPointSize(int(fontSize))
+        else:                        
+            try:
+                self.text_style['font-size'] = fontSize + 'pt'
+            except:
+                print('error on set font size')
         self.refreshTextStyle()
 
     def refreshTextStyle(self):
@@ -274,6 +297,7 @@ class MainApp(QMainWindow):
             for url in urls:
                 fileName = url.toLocalFile()
                 self.observer.addPath(fileName)
+                self.last_font = fileName
                 fontName = self.setTextFont(fileName)
                 if fontName:
                     self.setActiveFontLabel(fontName)
