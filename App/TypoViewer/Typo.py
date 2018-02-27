@@ -35,14 +35,18 @@ class MainApp(QMainWindow):
     def __init__(self, parent=None):
         self.settings = TypoSettings().getSettings()
         self.user_texts = UserTexts().getTexts()
-        self.text_style = {'background-color':'#FFFEEE', 'font-size':'28pt'}
-        os.environ['QT_HARFBUZZ'] = 'old'
+
+        self.text_font_size = "128"
+        #self.text_background_color = "#FFFEEE"
+        self.text_color = "#FF0000"
+
+        #os.environ['QT_HARFBUZZ'] = 'old'
         super(MainApp, self).__init__(parent)
         self.observer = QFileSystemWatcher()
         self.createUi()
-        self.fontsDB = QFontDatabase()
+
         self.userTextIds = [0]
-        self.last_font = None
+
 
 
     def convertToUnicode(self, source, target):
@@ -99,9 +103,11 @@ class MainApp(QMainWindow):
 
     def createUi(self):
         self.ui = Ui_MainWindow()
+        self.fontsDB = QFontDatabase()
         self.ui.setupUi(self)
         self.move(50, 50)
         self.setAcceptDrops(True)
+        self.last_font = None
 
         # transparent
         self.setAttribute(Qt.WA_DeleteOnClose, True)
@@ -112,10 +118,12 @@ class MainApp(QMainWindow):
         self.oldPos = self.pos()
 
         seizGrip = QSizeGrip(self)
-        self.setWindowOpacity(0.90)
+        self.ui.sldTrans.setValue(99)
+        self.text_background_color = "#333333"
+        #self.text_background_color = "transparent"
+        self.text_color = "#FFFEEE"
 
-        self.text_style['background-color'] = "#cccccc"
-        self.text_style['color'] = "#ff0000"
+
 
 
         # disable observe checkbox on start
@@ -129,14 +137,29 @@ class MainApp(QMainWindow):
         self.observer.fileChanged.connect(self.setTextFont)
         self.ui.textEdit.textChanged.connect(self.saveUserText)
         self.ui.btnPdbExport.clicked.connect(self.exportToPdf)
+        self.ui.sldTrans.valueChanged.connect(self.adjustTransparent)
 
 
         #self.ui.textEdit
+
+
+
 
         self.resize(self.settings.value("size", QSize(270, 225)))
         self.move(self.settings.value("pos", QPoint(50, 50)))
         self.setCustomSampleText()
         self.refreshTextStyle()
+        try:
+            self.text_font_size = self.settings.value("last_font_size", self.text_font_size)
+            self.last_font = self.settings.value("last_font")
+            if self.last_font:
+                #self.setTextFont(self.last_font, int(self.text_font_size))
+                pass
+        except:
+            pass
+
+    def adjustTransparent(self,e):
+        self.setWindowOpacity(e/100.0)
 
     def mousePressEvent(self, event):
         self.oldPos = event.globalPos()
@@ -146,7 +169,7 @@ class MainApp(QMainWindow):
         #print(delta)
         self.move(self.x() + delta.x(), self.y() + delta.y())
         self.oldPos = event.globalPos()
-                
+
     def exportToPdf(self):
         printer = QPrinter(QPrinter.PrinterResolution)
         printer.setOutputFormat(QPrinter.PdfFormat)
@@ -195,7 +218,7 @@ class MainApp(QMainWindow):
         except:
             print("error on opining sample text resource file")
 
-
+        self.refreshTextStyle()
         """
         begin = 1
         end = 1000
@@ -233,11 +256,15 @@ class MainApp(QMainWindow):
 
     def setTextFont(self, fileName, size=92):
         print(size)
+
         bin = self.readFontFileAsBinary(fileName)
         QFontDatabase.removeAllApplicationFonts()
         #id = QFontDatabase.addApplicationFont(fileName)
         id = QFontDatabase.addApplicationFontFromData(bin)
-        family = QFontDatabase.applicationFontFamilies(id)[0]
+        try:
+            family = QFontDatabase.applicationFontFamilies(id)[0]
+        except:
+            return "Not found"
         font = QFontDatabase.font(self.fontsDB, family, 'bold', size)
         font.setStrikeOut(False)
         self.ui.textEdit.setFont(font)
@@ -257,20 +284,18 @@ class MainApp(QMainWindow):
 
     def setFontSize(self, index):
         fontSize = self.ui.cmbFontSize.itemText(index)
+        self.text_font_size = fontSize
         if self.last_font:
             #self.setTextFont(self.last_font, int(fontSize))
             self.ui.textEdit.font().setPointSize(int(fontSize))
-        else:                        
-            try:
-                self.text_style['font-size'] = fontSize + 'pt'
-            except:
-                print('error on set font size')
+
         self.refreshTextStyle()
 
+
     def refreshTextStyle(self):
-        style = ""
-        for prop in self.text_style.items():
-            style += prop[0] + ": " + prop[1] + "; "
+        style = "background-color:%s;color:%s;font-size:%spt;" %\
+                (self.text_background_color,self.text_color,self.text_font_size)
+        print(style)
         self.ui.textEdit.setStyleSheet(style)
 
     def setActiveFontLabel(self, fontName):
@@ -307,12 +332,17 @@ class MainApp(QMainWindow):
     def closeEvent(self, e):
         self.settings.setValue("size", self.size())
         self.settings.setValue("pos", self.pos())
+        self.settings.setValue("last_font", self.last_font)
+        self.settings.setValue("last_font_size", self.text_font_size)
         e.accept()
 
 app = QApplication([])
 #font= QFont("Courier New")
 #font.setStyleHint(QFont.Monospace)
 #app.setFont(font)
+
+from PyQt5.QtWidgets import QStyleFactory
+app.setStyle(QStyleFactory.create('Fusion'))
 win = MainApp()
 
 win.show()
