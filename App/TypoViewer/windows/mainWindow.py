@@ -1,12 +1,14 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file '../windows/mainWindow.ui'
+# Form implementation generated from reading ui file '../windows/mainWindow.ui',
+# licensing of '../windows/mainWindow.ui' applies.
 #
-# Created by: PyQt5 UI code generator 5.10
+# Created: Tue Aug 14 12:15:54 2018
+#      by: pyside2-uic  running on PySide2 5.11.1
 #
 # WARNING! All changes made in this file will be lost!
 
-from PyQt5 import QtCore, QtGui, QtWidgets
+from PySide2 import QtCore, QtGui, QtWidgets
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -115,8 +117,6 @@ class Ui_MainWindow(object):
         self.textEdit = QtWidgets.QTextEdit(self.centralwidget)
         font = QtGui.QFont()
         font.setUnderline(False)
-        font.setKerning(False)
-        font.setStyleStrategy(QtGui.QFont.PreferAntialias)
         self.textEdit.setFont(font)
         self.textEdit.setAcceptDrops(False)
         self.textEdit.setStyleSheet("background:#ffffff;")
@@ -139,36 +139,35 @@ class Ui_MainWindow(object):
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
     def retranslateUi(self, MainWindow):
-        _translate = QtCore.QCoreApplication.translate
-        MainWindow.setWindowTitle(_translate("MainWindow", "Typo Viewer"))
-        self.lblActiveFont.setText(_translate("MainWindow", "Default Font"))
-        self.chkObserve.setText(_translate("MainWindow", "Observe"))
-        self.btnPdbExport.setText(_translate("MainWindow", "PDF"))
-        self.lblFontSize.setText(_translate("MainWindow", "Size: "))
-        self.cmbFontSize.setItemText(0, _translate("MainWindow", "8"))
-        self.cmbFontSize.setItemText(1, _translate("MainWindow", "9"))
-        self.cmbFontSize.setItemText(2, _translate("MainWindow", "12"))
-        self.cmbFontSize.setItemText(3, _translate("MainWindow", "18"))
-        self.cmbFontSize.setItemText(4, _translate("MainWindow", "36"))
-        self.cmbFontSize.setItemText(5, _translate("MainWindow", "48"))
-        self.cmbFontSize.setItemText(6, _translate("MainWindow", "64"))
-        self.cmbFontSize.setItemText(7, _translate("MainWindow", "72"))
-        self.cmbFontSize.setItemText(8, _translate("MainWindow", "96"))
-        self.cmbFontSize.setItemText(9, _translate("MainWindow", "144"))
-        self.cmbFontSize.setItemText(10, _translate("MainWindow", "180"))
-        self.cmbFontSize.setItemText(11, _translate("MainWindow", "220"))
-        self.cmbFontSize.setItemText(12, _translate("MainWindow", "250"))
-        self.cmbTextSamples.setItemText(0, _translate("MainWindow", "custom text.."))
-        self.cmbTextSamples.setItemText(1, _translate("MainWindow", "arabic_1"))
-        self.cmbTextSamples.setItemText(2, _translate("MainWindow", "arabic_2"))
-        self.cmbTextSamples.setItemText(3, _translate("MainWindow", "kurdish"))
-        self.cmbTextSamples.setItemText(4, _translate("MainWindow", "marks"))
-        self.cmbTextSamples.setItemText(5, _translate("MainWindow", "persian_arabic"))
-        self.cmbTextSamples.setItemText(6, _translate("MainWindow", "persian_arabic2"))
-        self.cmbTextSamples.setItemText(7, _translate("MainWindow", "Quran"))
-        self.actionSettings.setText(_translate("MainWindow", "Settings"))
-        self.actionTo_PDF.setText(_translate("MainWindow", "To PDF"))
-        self.actionTo_PDF.setToolTip(_translate("MainWindow", "Export as PDF Document"))
+        MainWindow.setWindowTitle(QtWidgets.QApplication.translate("MainWindow", "Typo Viewer", None, -1))
+        self.lblActiveFont.setText(QtWidgets.QApplication.translate("MainWindow", "Default Font", None, -1))
+        self.chkObserve.setText(QtWidgets.QApplication.translate("MainWindow", "Observe", None, -1))
+        self.btnPdbExport.setText(QtWidgets.QApplication.translate("MainWindow", "PDF", None, -1))
+        self.lblFontSize.setText(QtWidgets.QApplication.translate("MainWindow", "Size: ", None, -1))
+        self.cmbFontSize.setItemText(0, QtWidgets.QApplication.translate("MainWindow", "8", None, -1))
+        self.cmbFontSize.setItemText(1, QtWidgets.QApplication.translate("MainWindow", "9", None, -1))
+        self.cmbFontSize.setItemText(2, QtWidgets.QApplication.translate("MainWindow", "12", None, -1))
+        self.cmbFontSize.setItemText(3, QtWidgets.QApplication.translate("MainWindow", "18", None, -1))
+        self.cmbFontSize.setItemText(4, QtWidgets.QApplication.translate("MainWindow", "36", None, -1))
+        self.cmbFontSize.setItemText(5, QtWidgets.QApplication.translate("MainWindow", "48", None, -1))
+        self.cmbFontSize.setItemText(6, QtWidgets.QApplication.translate("MainWindow", "64", None, -1))
+        self.cmbFontSize.setItemText(7, QtWidgets.QApplication.translate("MainWindow", "72", None, -1))
+        self.cmbFontSize.setItemText(8, QtWidgets.QApplication.translate("MainWindow", "96", None, -1))
+        self.cmbFontSize.setItemText(9, QtWidgets.QApplication.translate("MainWindow", "144", None, -1))
+        self.cmbFontSize.setItemText(10, QtWidgets.QApplication.translate("MainWindow", "180", None, -1))
+        self.cmbFontSize.setItemText(11, QtWidgets.QApplication.translate("MainWindow", "220", None, -1))
+        self.cmbFontSize.setItemText(12, QtWidgets.QApplication.translate("MainWindow", "250", None, -1))
+        self.cmbTextSamples.setItemText(0, QtWidgets.QApplication.translate("MainWindow", "custom text..", None, -1))
+        self.cmbTextSamples.setItemText(1, QtWidgets.QApplication.translate("MainWindow", "arabic_1", None, -1))
+        self.cmbTextSamples.setItemText(2, QtWidgets.QApplication.translate("MainWindow", "arabic_2", None, -1))
+        self.cmbTextSamples.setItemText(3, QtWidgets.QApplication.translate("MainWindow", "kurdish", None, -1))
+        self.cmbTextSamples.setItemText(4, QtWidgets.QApplication.translate("MainWindow", "marks", None, -1))
+        self.cmbTextSamples.setItemText(5, QtWidgets.QApplication.translate("MainWindow", "persian_arabic", None, -1))
+        self.cmbTextSamples.setItemText(6, QtWidgets.QApplication.translate("MainWindow", "persian_arabic2", None, -1))
+        self.cmbTextSamples.setItemText(7, QtWidgets.QApplication.translate("MainWindow", "Quran", None, -1))
+        self.actionSettings.setText(QtWidgets.QApplication.translate("MainWindow", "Settings", None, -1))
+        self.actionTo_PDF.setText(QtWidgets.QApplication.translate("MainWindow", "To PDF", None, -1))
+        self.actionTo_PDF.setToolTip(QtWidgets.QApplication.translate("MainWindow", "Export as PDF Document", None, -1))
 
 import TypoViewer.resources.icons_db
 import TypoViewer.resources.samples

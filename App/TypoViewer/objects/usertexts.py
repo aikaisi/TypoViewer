@@ -2,7 +2,7 @@
 # fadox.net <fadox@gmx.net>
 # created: 25.01.2018
 
-from PyQt5.QtCore import QSettings
+from PySide2.QtCore import QSettings
 
 class UserTexts:
     def __init__(self):

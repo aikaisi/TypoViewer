@@ -1,11 +1,11 @@
-from PyQt5.QtWidgets import (QMessageBox,QApplication, QWidget, QToolTip, QPushButton,
+from PySide2.QtWidgets import (QMessageBox,QApplication, QWidget, QToolTip, QPushButton,
                              QDesktopWidget, QMainWindow, QAction, qApp, QToolBar, QVBoxLayout,
                              QComboBox,QLabel,QLineEdit,QGridLayout,QMenuBar,QMenu,QStatusBar,
                              QTextEdit,QDialog,QFrame,QProgressBar
                              )
-from PyQt5 import QtCore, QtWidgets, QtGui
-from PyQt5.QtGui import QIcon,QFont,QPixmap,QPalette
-from PyQt5.QtCore import QCoreApplication, Qt,QBasicTimer, QPoint
+from PySide2 import QtCore, QtWidgets, QtGui
+from PySide2.QtGui import QIcon,QFont,QPixmap,QPalette
+from PySide2.QtCore import QCoreApplication, Qt,QBasicTimer, QPoint
 
 import sys
 

@@ -2,34 +2,35 @@
 # fadox.net <fadox@gmx.net>
 # created: 25.01.2018
 
-from PyQt5.QtGui import QIcon
-from PyQt5.QtGui import QColor
-from PyQt5.QtGui import QPixmap
-from PyQt5.QtGui import QFontDatabase
-from PyQt5.QtGui import QTextCharFormat
-from PyQt5.QtGui import QTextCursor
-from PyQt5.QtGui import QFont
-from PyQt5.QtCore import QFile, QSize, QPoint
-from PyQt5.QtCore import Qt, QSizeF
+from PySide2.QtGui import QIcon
+from PySide2.QtGui import QColor
+from PySide2.QtGui import QPixmap
+from PySide2.QtGui import QFontDatabase
+from PySide2.QtGui import QTextCharFormat
+from PySide2.QtGui import QTextCursor
+from PySide2.QtGui import QFont
+from PySide2.QtCore import QFile, QSize, QPoint
+from PySide2.QtCore import Qt, QSizeF
 
-from PyQt5.QtCore import QFileSystemWatcher
-from PyQt5.QtCore import QTextCodec
-from PyQt5.QtCore import QIODevice
-from PyQt5.QtCore import QByteArray
-from PyQt5.Qt import QPrinter
-from PyQt5.QtWidgets import QApplication
-from PyQt5.QtWidgets import QMainWindow
-from PyQt5.QtWidgets import QListWidgetItem
-from PyQt5.QtWidgets import QSizeGrip
+from PySide2.QtCore import QFileSystemWatcher
+from PySide2.QtCore import QTextCodec
+from PySide2.QtCore import QIODevice
+from PySide2.QtCore import QByteArray
+from PySide2.QtPrintSupport import QPrinter
+from PySide2.QtWidgets import QApplication
+from PySide2.QtWidgets import QMainWindow
+from PySide2.QtWidgets import QListWidgetItem
+from PySide2.QtWidgets import QSizeGrip
 from TypoViewer.windows.mainWindow import Ui_MainWindow
 from TypoViewer.objects.settings import TypoSettings
 from TypoViewer.objects.usertexts import UserTexts
-from PyQt5.QtCore import QSignalBlocker
+from PySide2.QtCore import QSignalBlocker
 import os, random
 
 
 # START
 class MainApp(QMainWindow):
+
     supportedFileFormats = ['docx']
 
     def __init__(self, parent=None):
@@ -341,7 +342,7 @@ app = QApplication([])
 #font.setStyleHint(QFont.Monospace)
 #app.setFont(font)
 
-from PyQt5.QtWidgets import QStyleFactory
+from PySide2.QtWidgets import QStyleFactory
 app.setStyle(QStyleFactory.create('Fusion'))
 win = MainApp()
 

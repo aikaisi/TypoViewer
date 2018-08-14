@@ -23,13 +23,13 @@ def main():
         envPath = (os.sep).join(sys.executable.split(os.sep)[:-1])
 
         # Convert *layout* resources file (qrc) to *layout*_ui.py
-        tasks.append("\pyrcc5.exe -o ../resources/icons_db.py ../resources/icons_db.qrc")
+        tasks.append("\Lib\site-packages\PySide2\pyside2-rcc.exe -o ../resources/icons_db.py ../resources/icons_db.qrc")
 
         # Convert *fonts* resources file (qrc) to *fonts*_ui.py
-        tasks.append("\pyrcc5.exe -o ../resources/samples.py ../resources/samples.qrc")
+        tasks.append("\Lib\site-packages\PySide2\pyside2-rcc.exe -o ../resources/samples.py ../resources/samples.qrc")
 
         # Convert Qt Main *Window* file (ui) to *window'_ui.py
-        tasks.append("\pyuic5.exe -o ../windows/mainWindow.py ../windows/mainWindow.ui")
+        tasks.append("\Scripts\pyside2-uic.exe -o ../windows/mainWindow.py ../windows/mainWindow.ui")
     # OSX
     else:
         envPath = ""
