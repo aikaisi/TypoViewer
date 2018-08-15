@@ -25,7 +25,26 @@ from TypoViewer.windows.mainWindow import Ui_MainWindow
 from TypoViewer.objects.settings import TypoSettings
 from TypoViewer.objects.usertexts import UserTexts
 from PyQt5.QtCore import QSignalBlocker
+
+from PyQt5.QtWidgets import QDialog
+
+
 import os, random
+
+
+class Ui_Dialog(object):
+    def setupUi(self, Dialog):
+        Dialog.setObjectName("Dialog")
+        Dialog.resize(358, 126)
+
+
+        # 2 sample functions
+
+    def return_accept(self):
+        print("yes")
+
+    def return_cancel(self):
+        print("no")
 
 
 # START
@@ -128,6 +147,7 @@ class MainApp(QMainWindow):
 
         # disable observe checkbox on start
         self.ui.chkObserve.setEnabled(False)
+        self.ui.chkHB.setEnabled(False)
 
         self.setAcceptDrops(True)
         self.ui.textEdit.setAcceptDrops(False)
@@ -138,6 +158,7 @@ class MainApp(QMainWindow):
         self.ui.textEdit.textChanged.connect(self.saveUserText)
         self.ui.btnPdbExport.clicked.connect(self.exportToPdf)
         self.ui.sldTrans.valueChanged.connect(self.adjustTransparent)
+        self.ui.chkHB.stateChanged.connect(self.showHbViewBar)
 
 
         #self.ui.textEdit
@@ -157,6 +178,15 @@ class MainApp(QMainWindow):
                 pass
         except:
             pass
+    def showHbViewBar(self, e):
+        print('########')
+
+        dialog = QDialog()
+        dialog.ui = Ui_Dialog()
+        dialog.ui.setupUi(dialog)
+        dialog.exec_()
+        dialog.show()
+
 
     def adjustTransparent(self,e):
         self.setWindowOpacity(e/100.0)
@@ -270,6 +300,7 @@ class MainApp(QMainWindow):
         self.ui.textEdit.setFont(font)
         self.ui.textEdit.setCurrentFont(font)
         self.ui.chkObserve.setEnabled(True)
+        self.ui.chkHB.setEnabled(True)
         return family
 
     def readFontFileAsBinary(self, path):

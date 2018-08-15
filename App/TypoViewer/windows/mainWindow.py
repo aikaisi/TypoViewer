@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file '../windows/mainWindow.ui'
 #
-# Created by: PyQt5 UI code generator 5.10
+# Created by: PyQt5 UI code generator 5.9.2
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -60,6 +60,10 @@ class Ui_MainWindow(object):
         self.btnPdbExport.setStyleSheet("color:#ff0000;")
         self.btnPdbExport.setObjectName("btnPdbExport")
         self.horizontalLayout.addWidget(self.btnPdbExport)
+        self.chkHB = QtWidgets.QCheckBox(self.frame)
+        self.chkHB.setStyleSheet("color:#fcfcfc;")
+        self.chkHB.setObjectName("chkHB")
+        self.horizontalLayout.addWidget(self.chkHB)
         self.sldTrans = QtWidgets.QSlider(self.frame)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Maximum, QtWidgets.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)
@@ -144,6 +148,7 @@ class Ui_MainWindow(object):
         self.lblActiveFont.setText(_translate("MainWindow", "Default Font"))
         self.chkObserve.setText(_translate("MainWindow", "Observe"))
         self.btnPdbExport.setText(_translate("MainWindow", "PDF"))
+        self.chkHB.setText(_translate("MainWindow", "HB View"))
         self.lblFontSize.setText(_translate("MainWindow", "Size: "))
         self.cmbFontSize.setItemText(0, _translate("MainWindow", "8"))
         self.cmbFontSize.setItemText(1, _translate("MainWindow", "9"))

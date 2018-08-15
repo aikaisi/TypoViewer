@@ -145,6 +145,16 @@
           </widget>
          </item>
          <item>
+          <widget class="QCheckBox" name="chkHB">
+           <property name="styleSheet">
+            <string notr="true">color:#fcfcfc;</string>
+           </property>
+           <property name="text">
+            <string>HB View</string>
+           </property>
+          </widget>
+         </item>
+         <item>
           <widget class="QSlider" name="sldTrans">
            <property name="sizePolicy">
             <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
